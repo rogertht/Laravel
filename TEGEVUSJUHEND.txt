@@ -1,8 +1,0 @@
-Laadida alla ja paigaldada:
-XAMPP			https://www.apachefriends.org/download.html
-Composer	https://getcomposer.org/download/
-Node.js		https://nodejs.org/en/
-
-Lisada Windowsi keskkonnamuutujasse 
-C:\Program Files\nodejs
-
