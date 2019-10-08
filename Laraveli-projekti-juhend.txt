@@ -1,0 +1,29 @@
+Käivitada käsurida ja liikuda sobivasse töökausta.
+
+composer create-project laravel/laravel social
+cd social
+
+Käivitada XAMPP kontrollpaneel (C:\xampp\xampp-control.exe) ja seal:
+1) käivitada Apache ja MySQL
+2) MySQL -> Admin
+
+Avanenud phpMyAdmin lehel tekitada andmebaas social_network
+
+social\.env failis teha muudatus: DB_DATABASE=social_network
+
+php artisan migrate
+
+composer require laravel/ui --dev
+
+php artisan ui react --auth
+
+npm install
+npm run dev
+
+php artisan serve
+
+Kontrollida tekitatud projekti veebilehitsejas aadressil localhost:8000
+Teha vähemalt 1 kasutaja.
+
+Ctrl+C
+
