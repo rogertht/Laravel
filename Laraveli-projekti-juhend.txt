@@ -27,3 +27,84 @@ Teha vähemalt 1 kasutaja.
 
 Ctrl+C
 
+
+
+php artisan make:migration create_messages_table
+
+Failis social\database\migrations\2019_10_04_######_create_messages_table.php
+teha muudatus:
+
+    public function up()
+    {
+        Schema::create('messages', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('user_id');
+            $table->string('body');
+            $table->timestamps();
+        });
+    }
+
+
+
+php artisan migrate
+
+php artisan make:model Message
+
+phpMyAdmin paneelis (  http://localhost/phpmyadmin/  ) tekitada mõned dummy-sõnumid.
+( social_network -> messages -> Insert )
+id välja pole vaja määrata, sinna tekib number automaatselt. user_id võib valida suvaliselt.
+
+
+HomeController.php failis teha muudatus:
+
+    public function index()
+    {
+        $messages = DB::table('messages')->get();
+
+        return view('home', [
+            'messages' => $messages
+        ]);
+    }
+
+ning sama faili ülemisse ossa juurde kirjutada: 
+use Illuminate\Support\Facades\DB;
+
+
+Failis home.blade.php teha muudatus:
+
+            <div class="card">
+                <div class="card-header">Uudised</div>
+
+                <div class="card-body">
+                    <form action="" method="post">
+                    
+                        <textarea class="form-control" name="body" rows="3" placeholder="Mis värk on?"></textarea>
+                        <button type="submit" class="btn btn-primary">Postita</button>
+
+                    </form>                    
+                </div>
+
+                <hr>
+
+                <div class="card-body">
+
+                    @foreach($messages as $message)
+
+                        <h5>Kasutaja nr: {{ $message->user_id }}</h5>
+
+                        {{ $message->body }}
+
+                        <br>
+                        <small>{{ $message->created_at }}</small>
+                        <hr>
+
+                    @endforeach
+
+                </div>
+            </div>
+
+
+
+php artisan inspire
+
+php artisan serve
