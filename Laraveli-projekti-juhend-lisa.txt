@@ -1,0 +1,83 @@
+Failis social\app\Message.php teha muudatus:
+
+class Message extends Model
+{
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+}
+
+
+Failis social\app\User.php lisada klassi User funktsioon:
+
+    public function messages()
+    {
+        return $this->hasMany('App\Message');
+    }
+
+
+
+Lisada faili social\routes\web.php järgmised read:
+
+Route::post('/createmessage', [
+    'uses' => 'MessageController@postCreateMessage',
+    'as' => 'message.create'
+]);
+
+
+Failis social\resources\views\home.blade.php
+teha muudatus:
+
+                    <form action="{{ route('message.create') }}" method="post">
+                    
+                        <textarea class="form-control" name="body" rows="3" placeholder="Mis värk on?"></textarea>
+                        <button type="submit" class="btn btn-primary">Postita</button>
+                        
+                        <input type="hidden" value="{{ Session::token() }}" name="_token">
+
+                    </form>  
+
+
+
+Kausta social\app\Http\Controllers\
+teha fail MessageController.php sisuga:
+
+<?php
+namespace App\Http\Controllers;
+use App\Message;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+
+class MessageController extends Controller
+{
+    public function postCreateMessage(Request $request)
+    {
+        $this->validate($request, [
+            'body' => 'required|max:1000'
+        ]);
+
+        $mes = new Message();
+        $mes->body = $request['body'];
+        $error = 'There was an error';
+        if ($request->user()->messages()->save($mes)) {
+            $error = 'Post successfully created!';
+        }
+        return redirect()->route('home')->with(['message' => $error]);
+    }
+}
+
+
+
+
+social\resources\views\layouts\app.blade.php
+
+
+                <a class="navbar-brand" href="{{ url('/') }}">
+<!--                    {{ config('app.name', 'Laravel') }}   -->
+                        Avaleht
+                </a>
+
+
+
